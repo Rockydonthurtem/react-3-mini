@@ -29,24 +29,31 @@ class App extends Component {
   }
 
   getVehicles() {
-    // axios (GET)
-    // setState with response -> vehiclesToDisplay
+    axios('https://app.swaggerhub.com/apis/DevMountain/Joes-Auto/1.0.0').then(results => {
+      toast.success("Successful got Vehicles");
+      this.setState({ ' vehiclesToDisplay': results.data });
+    }).catch(() => toast.error("Failed at fetching Vehicles"))
+
   }
 
   getPotentialBuyers() {
-    // axios (GET)
-    // setState with response -> buyersToDisplay
+    // axios.put()
   }
 
   sellCar(id) {
-    // axios (DELETE)
+    axios.delete(`https://app.swaggerhub.com/apis/DevMountain/Joes-Auto/1.0.0/vehicles/${id}`)
+      .then(results => {
+        toast.success("Success");
+        this.setState({ "gone": results.data.vehicles })
+          .catch(() => toast.error("Failed"))
+      })
     // setState with response -> vehiclesToDisplay
   }
 
   filterByMake() {
     let make = this.selectedMake.value;
 
-    // axios (GET)
+    axios.get(`https://app.swaggerhub.com/apis/DevMountain/Joes-Auto/1.0.0/?vehicles/${make}`)
     // setState with response -> vehiclesToDisplay
   }
 
@@ -57,9 +64,13 @@ class App extends Component {
     // setState with response -> vehiclesToDisplay
   }
 
-  updatePrice(priceChange, id) {
-    // axios (PUT)
-    // setState with response -> vehiclesToDisplay
+  updatePrice() {
+    axios.put(`https://joes-autos.herokuapp.com/api/vehicles/${id}/${price}`)
+      .then(results => {
+        toast.success("Successful")
+        this.setState({ 'vehicleToDisplay': results.data.vehicles });
+      }).catch(() => toast.error("Fail"))
+
   }
 
   addCar() {
@@ -71,8 +82,12 @@ class App extends Component {
       price: this.price.value
     };
 
-    // axios (POST)
-    // setState with response -> vehiclesToDisplay
+    axios.post(`https://app.swaggerhub.com/apis/DevMountain/Joes-Auto/1.0.0/vehicles`, newCar)
+      .then(results => {
+        toast.success("Way to Go")
+        this.setState({ 'vehiclesToDisplay': results.data.vehicle });
+      }).catch(() => toast.error("Fail"))
+    // WHY USE NEW CAR PARAM
   }
 
   addBuyer() {
